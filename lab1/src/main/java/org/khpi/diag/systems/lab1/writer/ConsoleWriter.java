@@ -35,9 +35,9 @@ public class ConsoleWriter {
         System.out.println();
     }
 
-    public static void printTestedRelationMatrix(String name, int degreesOfFreedom, double p, List<List<Integer>> matrix) {
+    public static void printTestedRelationMatrix(String name, int sizeN, double p, List<List<Integer>> matrix) {
         System.out.printf("TESTED %S RELATION MATRIX%n", name);
-        System.out.printf("Degrees of freedom: %d, P: %.2f%n", degreesOfFreedom, p);
+        System.out.printf("Size (N): %d, P: %.2f%n", sizeN, p);
         matrix.forEach(row -> {
             row.forEach(value -> System.out.printf("%4d |", value));
             System.out.println();

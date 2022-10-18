@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.DoubleToIntFunction;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -103,5 +104,22 @@ public class Matrices {
         int lastIndex = column.lastIndexOf(x) + 1;
 
         return (lastIndex + firstIndex) / 2.0;
+    }
+
+    public List<List<Integer>> testSignificanceByDistribution(List<List<Double>> matrix, DoubleToIntFunction distributionCriteria) {
+        List<List<Integer>> result = new ArrayList<>(matrix.size());
+
+        for (List<Double> row : matrix) {
+            List<Integer> testedRow = new ArrayList<>(row.size());
+
+            for (Double value : row) {
+                int significance = distributionCriteria.applyAsInt(value);
+                testedRow.add((int) (value / Math.abs(value)) * significance);
+            }
+
+            result.add(testedRow);
+        }
+
+        return result;
     }
 }

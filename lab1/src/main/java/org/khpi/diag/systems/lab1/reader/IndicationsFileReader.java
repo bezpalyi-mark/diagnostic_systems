@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 public class IndicationsFileReader {
 
     public static Map<Indication, List<Double>> readFromFile(String fileName) throws IOException, URISyntaxException {
-        Map<Indication, List<Double>> result = new HashMap<>();
+        Map<Indication, List<Double>> result = new EnumMap<>(Indication.class);
 
         Arrays.stream(Indication.values()).forEach(indication -> result.put(indication, new ArrayList<>()));
 
