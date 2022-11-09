@@ -44,4 +44,32 @@ public class ConsoleWriter {
         });
         System.out.println();
     }
+
+    public static void printNormalizedEDT(Map<Indication, List<Double>> indications, String normalizationName) {
+        System.out.println("EXPERIMENTAL DATA TABLE NORMALIZED WITH " + normalizationName);
+
+        Arrays.stream(Indication.values()).forEach(indication -> System.out.printf(" %18s |", indication.getShortIndicationName()));
+
+        System.out.println();
+
+        int size = indications.get(Indication.LEUKOCYTES_NUMBER).size();
+
+        for (int i = 0; i < size; i++) {
+            for (Indication sign : Indication.values()) {
+                System.out.printf(" %18.8s |", indications.get(sign).get(i));
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+    }
+
+    public static void printDistanceMatrix(List<List<Double>> matrix, String methodName) {
+        System.out.printf("%S DISTANCE MATRIX%n", methodName);
+        matrix.forEach(row -> {
+            row.forEach(value -> System.out.printf("%7.4f |", value));
+            System.out.println();
+        });
+        System.out.println();
+    }
 }

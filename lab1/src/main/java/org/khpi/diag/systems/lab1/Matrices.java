@@ -5,7 +5,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.khpi.diag.systems.lab1.model.Indication;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -21,24 +20,7 @@ public class Matrices {
     public static List<List<Double>> buildRelationMatrix(Map<Indication, List<Double>> indicationsMap,
                                                          BiFunction<List<Double>, List<Double>, Double> coefficient) {
 
-        List<Indication> unprocessedIndications = Arrays.stream(Indication.values()).collect(Collectors.toList());
-        List<List<Double>> result = new ArrayList<>(unprocessedIndications.size());
-
-        do {
-            Indication x1Indication = unprocessedIndications.get(0);
-            List<Double> x1Values = indicationsMap.get(x1Indication);
-
-            List<Double> row = unprocessedIndications.stream()
-                    .map(indicationsMap::get)
-                    .map(x2Values -> coefficient.apply(x1Values, x2Values))
-                    .collect(Collectors.toList());
-
-            unprocessedIndications.remove(x1Indication);
-            result.add(row);
-
-        } while (CollectionUtils.isNotEmpty(unprocessedIndications));
-
-        return reflectAlongMainDiagonal(result);
+        return buildSymmetricRelations(indicationsMap, coefficient);
     }
 
     private static List<List<Double>> reflectAlongMainDiagonal(List<List<Double>> matrixRows) {
@@ -121,5 +103,54 @@ public class Matrices {
         }
 
         return result;
+    }
+
+    public List<List<Double>> getDistanceMatrix(Map<Indication, List<Double>> indications,
+                                                BiFunction<List<Double>, List<Double>, Double> distanceMethod) {
+
+        Map<Integer, List<Double>> objects = splitIndicationsByObject(new ArrayList<>(indications.values()));
+
+        return buildSymmetricRelations(objects, distanceMethod);
+    }
+
+    private Map<Integer, List<Double>> splitIndicationsByObject(List<List<Double>> matrixColumns) {
+
+        int objectsCount = matrixColumns.get(0).size();
+
+        Map<Integer, List<Double>> result = new HashMap<>(objectsCount);
+
+        for (int i = 0; i < objectsCount; i++) {
+            ArrayList<Double> row = new ArrayList<>();
+
+            for (List<Double> column : matrixColumns) {
+                row.add(column.get(i));
+            }
+
+            result.put(i, row);
+        }
+
+        return result;
+    }
+
+    private static <T> List<List<Double>> buildSymmetricRelations(Map<T, List<Double>> data, BiFunction<List<Double>, List<Double>, Double> mapper) {
+        
+        List<T> uncheckedObjectKeys = new ArrayList<>(data.keySet());
+        List<List<Double>> result = new ArrayList<>(uncheckedObjectKeys.size());
+
+        do {
+            T objectKey = uncheckedObjectKeys.get(0);
+            List<Double> x1Values = data.get(objectKey);
+
+            List<Double> row = uncheckedObjectKeys.stream()
+                    .map(data::get)
+                    .map(x2Values -> mapper.apply(x1Values, x2Values))
+                    .collect(Collectors.toList());
+
+            uncheckedObjectKeys.remove(objectKey);
+            result.add(row);
+
+        } while (CollectionUtils.isNotEmpty(uncheckedObjectKeys));
+
+        return reflectAlongMainDiagonal(result);
     }
 }

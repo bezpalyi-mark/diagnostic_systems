@@ -1,14 +1,17 @@
 package org.khpi.diag.systems.lab1;
 
-import org.khpi.diag.systems.lab1.significance.DistributionCriteria;
+import org.khpi.diag.systems.lab1.distance.Distances;
 import org.khpi.diag.systems.lab1.model.Indication;
+import org.khpi.diag.systems.lab1.normalization.Normalizations;
 import org.khpi.diag.systems.lab1.reader.IndicationsFileReader;
+import org.khpi.diag.systems.lab1.significance.DistributionCriteria;
 import org.khpi.diag.systems.lab1.writer.ConsoleWriter;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Lab1App {
     public static void main(String[] args) throws IOException, URISyntaxException {
@@ -44,5 +47,22 @@ public class Lab1App {
 
         ConsoleWriter.printRelationMatrix("kendall", kendallRelationMatrix);
         ConsoleWriter.printTestedRelationMatrix("kendall", sizeN, p, testedKendall);
+
+        //--------------------------------------------------------------------------------------------------------------
+        // CENTERING AND NORMALIZATION
+        //--------------------------------------------------------------------------------------------------------------
+
+        Map<Indication, List<Double>> normalizedIndications = indications.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> Normalizations.unitCube(entry.getValue())));
+
+        ConsoleWriter.printNormalizedEDT(normalizedIndications, "UNIT CUBE");
+
+        //--------------------------------------------------------------------------------------------------------------
+        // DISTANCE MATRIX
+        //--------------------------------------------------------------------------------------------------------------
+
+        List<List<Double>> distanceMatrix = Matrices.getDistanceMatrix(normalizedIndications, Distances::chebyshev);
+
+        ConsoleWriter.printDistanceMatrix(distanceMatrix, "Chebyshev");
     }
 }
