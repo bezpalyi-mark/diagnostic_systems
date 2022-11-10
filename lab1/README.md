@@ -367,55 +367,55 @@ SQRT[((𝑠𝑖𝑧𝑒 ∗ 𝑥𝑆𝑞𝑢𝑎𝑟𝑒𝑆𝑢𝑚) − 𝑥�
 ### Кінцевий результат роботи
 
 ````
-        final double p = 0.95;
+final double p = 0.95;
 
-        Map<Indication, List<Double>> indications = IndicationsFileReader.readFromFile("/lab1_v2.txt");
-        int sizeN = indications.get(Indication.LEUKOCYTES_NUMBER).size();
+Map<Indication, List<Double>> indications = IndicationsFileReader.readFromFile("/lab1_v2.txt");
+int sizeN = indications.get(Indication.LEUKOCYTES_NUMBER).size();
 
-        DistributionCriteria distributionCriteria = DistributionCriteria.builder()
-                .sizeN(sizeN)
-                .probability(p)
-                .build();
+DistributionCriteria distributionCriteria = DistributionCriteria.builder()
+        .sizeN(sizeN)
+        .probability(p)
+        .build();
 
-        ConsoleWriter.printEDT(indications);
+ConsoleWriter.printEDT(indications);
 
-        //--------------------------------------------------------------------------------------------------------------
-        // PEARSON
-        //--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+// PEARSON
+//--------------------------------------------------------------------------------------------------------------
 
-        List<List<Double>> pearsonRelationMatrix = Matrices.buildSymmetricRelations(indications, Coefficients::pearson);
-        List<List<Integer>> testedPearson = Matrices.testSignificanceByDistribution(pearsonRelationMatrix, distributionCriteria::student);
+List<List<Double>> pearsonRelationMatrix = Matrices.buildSymmetricRelations(indications, Coefficients::pearson);
+List<List<Integer>> testedPearson = Matrices.testSignificanceByDistribution(pearsonRelationMatrix, distributionCriteria::student);
 
-        ConsoleWriter.printRelationMatrix("pearson", pearsonRelationMatrix);
-        ConsoleWriter.printTestedRelationMatrix("pearson", sizeN, p, testedPearson);
+ConsoleWriter.printRelationMatrix("pearson", pearsonRelationMatrix);
+ConsoleWriter.printTestedRelationMatrix("pearson", sizeN, p, testedPearson);
 
-        //--------------------------------------------------------------------------------------------------------------
-        // KENDALL
-        //--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+// KENDALL
+//--------------------------------------------------------------------------------------------------------------
 
-        Map<Indication, List<Double>> indicationRanksMap = Matrices.calculateRanks(indications);
-        List<List<Double>> kendallRelationMatrix = Matrices.buildSymmetricRelations(indicationRanksMap, Coefficients::kendall);
-        List<List<Integer>> testedKendall = Matrices.testSignificanceByDistribution(kendallRelationMatrix, distributionCriteria::normal);
+Map<Indication, List<Double>> indicationRanksMap = Matrices.calculateRanks(indications);
+List<List<Double>> kendallRelationMatrix = Matrices.buildSymmetricRelations(indicationRanksMap, Coefficients::kendall);
+List<List<Integer>> testedKendall = Matrices.testSignificanceByDistribution(kendallRelationMatrix, distributionCriteria::normal);
 
-        ConsoleWriter.printRelationMatrix("kendall", kendallRelationMatrix);
-        ConsoleWriter.printTestedRelationMatrix("kendall", sizeN, p, testedKendall);
+ConsoleWriter.printRelationMatrix("kendall", kendallRelationMatrix);
+ConsoleWriter.printTestedRelationMatrix("kendall", sizeN, p, testedKendall);
 
-        //--------------------------------------------------------------------------------------------------------------
-        // CENTERING AND NORMALIZATION
-        //--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+// CENTERING AND NORMALIZATION
+//--------------------------------------------------------------------------------------------------------------
 
-        Map<Indication, List<Double>> normalizedIndications = indications.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> Normalizations.unitCube(entry.getValue())));
+Map<Indication, List<Double>> normalizedIndications = indications.entrySet().stream()
+        .collect(Collectors.toMap(Map.Entry::getKey, entry -> Normalizations.unitCube(entry.getValue())));
 
-        ConsoleWriter.printNormalizedEDT(normalizedIndications, "UNIT CUBE");
+ConsoleWriter.printNormalizedEDT(normalizedIndications, "UNIT CUBE");
 
-        //--------------------------------------------------------------------------------------------------------------
-        // DISTANCE MATRIX
-        //--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+// DISTANCE MATRIX
+//--------------------------------------------------------------------------------------------------------------
 
-        List<List<Double>> distanceMatrix = Matrices.getDistanceMatrix(normalizedIndications, Distances::chebyshev);
+List<List<Double>> distanceMatrix = Matrices.getDistanceMatrix(normalizedIndications, Distances::chebyshev);
 
-        ConsoleWriter.printDistanceMatrix(distanceMatrix, "Chebyshev");
+ConsoleWriter.printDistanceMatrix(distanceMatrix, "Chebyshev");
 ````
 
 ### Вивід на консоль
