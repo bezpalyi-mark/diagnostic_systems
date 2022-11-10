@@ -31,7 +31,7 @@ public class Lab1App {
         // PEARSON
         //--------------------------------------------------------------------------------------------------------------
 
-        List<List<Double>> pearsonRelationMatrix = Matrices.buildRelationMatrix(indications, Coefficients::pearson);
+        List<List<Double>> pearsonRelationMatrix = Matrices.buildSymmetricRelations(indications, Coefficients::pearson);
         List<List<Integer>> testedPearson = Matrices.testSignificanceByDistribution(pearsonRelationMatrix, distributionCriteria::student);
 
         ConsoleWriter.printRelationMatrix("pearson", pearsonRelationMatrix);
@@ -42,7 +42,7 @@ public class Lab1App {
         //--------------------------------------------------------------------------------------------------------------
 
         Map<Indication, List<Double>> indicationRanksMap = Matrices.calculateRanks(indications);
-        List<List<Double>> kendallRelationMatrix = Matrices.buildRelationMatrix(indicationRanksMap, Coefficients::kendall);
+        List<List<Double>> kendallRelationMatrix = Matrices.buildSymmetricRelations(indicationRanksMap, Coefficients::kendall);
         List<List<Integer>> testedKendall = Matrices.testSignificanceByDistribution(kendallRelationMatrix, distributionCriteria::normal);
 
         ConsoleWriter.printRelationMatrix("kendall", kendallRelationMatrix);

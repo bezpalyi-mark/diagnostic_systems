@@ -1,9 +1,13 @@
 package org.khpi.diag.systems.lab1.distance;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@UtilityClass
 public class Distances {
+
     public static double chebyshev(List<Double> x1Vector, List<Double> x2Vector) {
         if (x1Vector.size() != x2Vector.size()) {
             throw new IllegalArgumentException("Vectors must be with the same size");

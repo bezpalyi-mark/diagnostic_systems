@@ -17,34 +17,6 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class Matrices {
 
-    public static List<List<Double>> buildRelationMatrix(Map<Indication, List<Double>> indicationsMap,
-                                                         BiFunction<List<Double>, List<Double>, Double> coefficient) {
-
-        return buildSymmetricRelations(indicationsMap, coefficient);
-    }
-
-    private static List<List<Double>> reflectAlongMainDiagonal(List<List<Double>> matrixRows) {
-        List<List<Double>> matrixColumns = new ArrayList<>(matrixRows.size());
-        matrixRows.forEach(row -> matrixColumns.add(new ArrayList<>(row.size())));
-
-        for (int j = 0; j < matrixRows.size(); j++) {
-            List<Double> row = matrixRows.get(j);
-            for (int i = 1, k = j; i < row.size(); i++, k++) {
-                List<Double> column = matrixColumns.get(k);
-                Double value = row.get(i);
-                column.add(value);
-            }
-        }
-
-        matrixColumns.add(0, new ArrayList<>());
-
-        for (int i = 0; i < matrixRows.size(); i++) {
-            matrixColumns.get(i).addAll(matrixRows.get(i));
-        }
-
-        return matrixColumns;
-    }
-
     public static Map<Indication, List<Double>> calculateRanks(Map<Indication, List<Double>> indicationsMap) {
         Map<Indication, List<Double>> ranksMatrix = new EnumMap<>(Indication.class);
 
@@ -132,8 +104,9 @@ public class Matrices {
         return result;
     }
 
-    private static <T> List<List<Double>> buildSymmetricRelations(Map<T, List<Double>> data, BiFunction<List<Double>, List<Double>, Double> mapper) {
-        
+    public static <T> List<List<Double>> buildSymmetricRelations(Map<T, List<Double>> data,
+                                                                  BiFunction<List<Double>, List<Double>, Double> mapper) {
+
         List<T> uncheckedObjectKeys = new ArrayList<>(data.keySet());
         List<List<Double>> result = new ArrayList<>(uncheckedObjectKeys.size());
 
@@ -152,5 +125,27 @@ public class Matrices {
         } while (CollectionUtils.isNotEmpty(uncheckedObjectKeys));
 
         return reflectAlongMainDiagonal(result);
+    }
+
+    private static List<List<Double>> reflectAlongMainDiagonal(List<List<Double>> matrixRows) {
+        List<List<Double>> matrixColumns = new ArrayList<>(matrixRows.size());
+        matrixRows.forEach(row -> matrixColumns.add(new ArrayList<>(row.size())));
+
+        for (int j = 0; j < matrixRows.size(); j++) {
+            List<Double> row = matrixRows.get(j);
+            for (int i = 1, k = j; i < row.size(); i++, k++) {
+                List<Double> column = matrixColumns.get(k);
+                Double value = row.get(i);
+                column.add(value);
+            }
+        }
+
+        matrixColumns.add(0, new ArrayList<>());
+
+        for (int i = 0; i < matrixRows.size(); i++) {
+            matrixColumns.get(i).addAll(matrixRows.get(i));
+        }
+
+        return matrixColumns;
     }
 }

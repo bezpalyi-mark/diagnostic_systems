@@ -1,12 +1,12 @@
 package org.khpi.diag.systems.lab1.normalization;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class Normalizations {
-
-    private Normalizations() {
-    }
 
     public static List<Double> unitCube(List<Double> indicationValues) {
         double sum = indicationValues.stream()
