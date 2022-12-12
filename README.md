@@ -5,3 +5,5 @@
 1. Lab1 - work with a table of experimental data, calculating of the Pearson and Kendall coefficients, checking 
 significance using Student's and normal distributions, centering and normalizing the table of experimental data, finding 
 the distance matrix using the Chebyshev method
+2. Lab2 - building regression models, which includes working with linear multiple regression, the implementation 
+of the Gaussian elimination and assessing the quality of the regression model
