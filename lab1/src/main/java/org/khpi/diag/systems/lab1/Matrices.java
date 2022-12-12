@@ -141,6 +141,7 @@ public class Matrices {
         }
 
         matrixColumns.add(0, new ArrayList<>());
+        matrixColumns.remove(matrixColumns.size() - 1);
 
         for (int i = 0; i < matrixRows.size(); i++) {
             matrixColumns.get(i).addAll(matrixRows.get(i));
