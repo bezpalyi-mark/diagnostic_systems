@@ -334,7 +334,6 @@ public static List<Diagnosis> findPossibleDiagnoses(Map<Diagnosis, List<Float>> 
 ## Результати роботи
 
 ````
-"C:\Program Files\Microsoft\jdk-11.0.16.8-hotspot\bin\java.exe" -javaagent:C:\Users\Admin\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\222.4345.14\lib\idea_rt.jar=62184:C:\Users\Admin\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\222.4345.14\bin -Dfile.encoding=UTF-8 -classpath W:\Magic\diag_systems\labs\lab3\target\classes;W:\Magic\diag_systems\labs\lab1\target\classes;C:\Users\Admin\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-math\2.2\commons-math-2.2.jar org.khpi.diag.systems.lab3.Lab3App
 DIAGNOSIS PROBABILITIES: 
 Diagnosis #1 | Probability 0.2408 |
 Diagnosis #2 | Probability 0.2992 |
