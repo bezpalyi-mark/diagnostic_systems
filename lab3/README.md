@@ -333,6 +333,34 @@ public static List<Diagnosis> findPossibleDiagnoses(Map<Diagnosis, List<Float>> 
 
 ## Результати роботи
 
+Основний цикл програми виглядає наступним чином:
+
+````
+    int[] indexes = {4, 50, 7, 3}; // specified by variant
+    List<Individual> individuals = FileIndividualsReader.fromFile("/lab1_v2.txt");
+
+    Stats stats = StatisticsUtils.collectStats(individuals); // N1, N2, N3 and other statistics with probabilities
+    Map<Diagnosis, Map<Indication, Double>> medicalMemoryTable = StatisticsUtils.computeMedicalMemoryTable(stats);
+
+    Map<Individual, List<Diagnosis>> determinationResults = new HashMap<>();
+
+    for (int index : indexes) {
+        Individual individual = individuals.get(index);
+
+        Map<Diagnosis, List<Float>> hammingTable = DiagnosisQualifier.computeHammingTable(individual, medicalMemoryTable);
+
+        List<Diagnosis> diagnoses = DiagnosisQualifier.determineDiagnosis(hammingTable)
+                .map(Collections::singletonList)
+                .orElseGet(() -> DiagnosisQualifier.findPossibleDiagnoses(hammingTable));
+
+        determinationResults.put(individual, diagnoses);
+    }
+
+ConsoleWriter.printDiagnosesStatistics(stats);
+ConsoleWriter.printIndicationStatistics(stats);
+ConsoleWriter.printDeterminationResults(determinationResults);
+````
+
 ````
 DIAGNOSIS PROBABILITIES: 
 Diagnosis #1 | Probability 0.2408 |
