@@ -361,6 +361,8 @@ ConsoleWriter.printIndicationStatistics(stats);
 ConsoleWriter.printDeterminationResults(determinationResults);
 ````
 
+### Вивід на консоль
+
 ````
 DIAGNOSIS PROBABILITIES: 
 Diagnosis #1 | Probability 0.2408 |
