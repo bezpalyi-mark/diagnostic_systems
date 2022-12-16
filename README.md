@@ -7,3 +7,5 @@ significance using Student's and normal distributions, centering and normalizing
 the distance matrix using the Chebyshev method
 2. Lab2 - building regression models, which includes working with linear multiple regression, the implementation 
 of the Gaussian elimination and assessing the quality of the regression model
+3. Lab3 - study of the method of synthesis of diagnostic rules based on
+   deterministic logic and Hamming distance
